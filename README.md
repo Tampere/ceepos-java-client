@@ -83,3 +83,52 @@ if (!callback.checksumValid()) {
     throw new CpuPaymentException("Virheellinen tarkistussumma CPU:n callback-viestissä");
 }
 ```
+## Asentaminen 
+
+CPU Payment Client on julkaistu Maven-pakettina GitHub Packages -rekisteriin. Alla ohjeet paketin asentamiseen paikallisesti.
+
+### 1. Luo GitHubin Personal Access Token
+
+- Mene GitHubissa reittiä: **Settings** → **Developer settings** → **Personal access tokens (classic)**.
+- Tarvittava scope (laajuus): ainoastaan `read:packages`.
+
+### 2. Lisää tunnukset tiedostoon ~/.m2/settings.xml
+
+Tiedoston `<id>`-elementin on vastattava `server/pom.xml`-tiedostossa määriteltyä repositoryn id:tä (`github`):
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>github</id>
+      <username>GITHUB_KÄYTTÄJÄTUNNUS</username>
+      <password>GITHUB_TOKEN</password>
+    </server>
+  </servers>
+</settings>
+```
+
+Jos `~/.m2/settings.xml` on jo olemassa (esim. muiden projektien jäljiltä), älä ylikirjoita tiedostoa. Lisää ainoastaan yllä oleva `<server>`-lohko olemassa olevan `<servers>`-elementin sisään.
+
+### 3. Lisää riippuvuus projektisi pom.xml-tiedostoon
+
+Lisää seuraava riippuvuus (dependency) `server/pom.xml`-tiedoston `<dependencies>`-osion sisään:
+
+```xml
+<dependency>
+  <groupId>fi.tampere</groupId>
+  <artifactId>cpupayment-client</artifactId>
+  <version>0.1</version>
+</dependency>
+```
+
+### 4. Varmista toimivuus
+
+Suorita seuraavat komennot:
+
+```bash
+cd server
+mvn clean install
+```
+
+Mavenin pitäisi nyt ladata riippuvuus `fi.tampere:cpupayment-client:0.1` osoitteesta `https://maven.pkg.github.com/Tampere/cpupayment-client`. Jos saat tässä vaiheessa 401- tai 403-virheen, se tarkoittaa, että joko tokenistasi puuttuu `read:packages`-oikeus.
