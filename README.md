@@ -131,4 +131,4 @@ cd server
 mvn clean install
 ```
 
-Mavenin pitäisi nyt ladata riippuvuus `fi.tampere:cpupayment-client:0.1` osoitteesta `https://maven.pkg.github.com/Tampere/cpupayment-client`. Jos saat tässä vaiheessa 401- tai 403-virheen, se tarkoittaa, että joko tokenistasi puuttuu `read:packages`-oikeus.
+Mavenin pitäisi nyt ladata riippuvuus `fi.tampere:cpupayment-client:0.1` osoitteesta `https://maven.pkg.github.com/Tampere/cpupayment-client`.
