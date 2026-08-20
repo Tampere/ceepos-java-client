@@ -23,8 +23,6 @@ public class CpuPaymentClient {
 
     private final String cpuUrl;
     private final String cpuSource;
-    private final String cpuProductCode;
-    private final String cpuVatClass;
     private final String developerPrefix;
     private final CpuPaymentSecretProvider cpuSecretProvider;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -34,14 +32,10 @@ public class CpuPaymentClient {
         String cpuUrl,
         String cpuSource,
         String cpuSecret,
-        String cpuProductCode,
-        String cpuVatClass,
         String developerPrefix) {
         this.cpuUrl = cpuUrl;
         this.cpuSource = cpuSource;
         this.cpuSecretProvider = () -> cpuSecret;
-        this.cpuProductCode = cpuProductCode;
-        this.cpuVatClass = cpuVatClass;
         this.developerPrefix = developerPrefix;
     }
 
@@ -60,7 +54,7 @@ public class CpuPaymentClient {
         List<String> details) {
     }
 
-    public Optional<PaymentResult> createPayment(CpuPaymentOrderDetails details) {
+    public Optional<PaymentResult> createPayment(CpuPaymentOrderDetails details, String cpuProductCode, String cpuVatClass) {
         CpuPaymentRequestDTO request = new CpuPaymentRequestDTO(cpuSource, developerPrefix + details.orderId(), details.description(), details.notificationAddress());
         request.setReturnAddress(details.returnAddress());
         request.setEmail(details.email());

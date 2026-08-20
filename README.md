@@ -38,15 +38,15 @@ Jokaiseen CpuPaymentClientin ja CPU-palveluntarjoajan väliseen HTTP(s) pyyntö�
 | `CPU_URL`             | `https://verkkomaksutesti.cpu.fi/maksu.html` | CPU-rajapinnan osoite, johon maksupyynnöt lähetetään                                                           |
 | `CPU_SOURCE`          | `cpu_user_sourc`                             | Kauppiaan Source-tunnus                                                                                        |
 | `CPU_SECRET`          | `top_secret`                                 | Kauppiaskohtainen salaisuus tarkistussumman laskentaan ja tarkistukseen                                        |
-| `CPU_PRODUCTCODE`     | `demo_004`                                   | Tuoterivien tuotekoodi                                                                                         |
-| `CPU_VATCLASS`        | `0`                                          | Tuoterivien ALV-luokka                                                                                         |
 | `CPU_DEVELOPERPREFIX` | (tyhjä)                                      | Tilausviitteiden etuliite, jolla erotetaan eri ympäristöjen (esim. kehittäjien) tilaus-id:t toisistaan CPU:ssa |
+
+Tuoterivien tuotekoodi ja ALV-luokka annetaan `createPayment`-kutsun parametreina (ks. alla), joten samalla clientillä voi lähettää maksupyyntöjä eri tuotekoodeilla ja ALV-luokilla.
 
 ## Käyttöesimerkki
 
 ```java
 CpuPaymentClient client = new CpuPaymentClient(
-    cpuUrl, cpuSource, cpuSecret, cpuProductCode, cpuVatClass, developerPrefix);
+    cpuUrl, cpuSource, cpuSecret, developerPrefix);
 
 // Maksun luonti
 CpuPaymentOrderDetails details = new CpuPaymentOrderDetails(
@@ -59,7 +59,7 @@ CpuPaymentOrderDetails details = new CpuPaymentOrderDetails(
     notificationAddress,
     List.of(new CpuPaymentProductLine(product.getPrice(), product.getDescription())));
 
-Optional<CpuPaymentClient.PaymentResult> result = client.createPayment(details);
+Optional<CpuPaymentClient.PaymentResult> result = client.createPayment(details, cpuProductCode, cpuVatClass);
 result.ifPresent(r -> {
     // Myös CPU:n maksupyyntöön antamassa vastauksessa on oma tiivisteensä,
     // joka kannattaa tarkistaa ennen käyttäjän ohjaamista maksuosoitteeseen.
