@@ -54,7 +54,7 @@ public class CpuPaymentClient {
         List<String> details) {
     }
 
-    public Optional<PaymentResult> createPayment(CpuPaymentOrderDetails details, String cpuProductCode, String cpuVatClass) {
+    public Optional<PaymentResult> createPayment(CpuPaymentOrderDetails details, String cpuVatClass) {
         CpuPaymentRequestDTO request = new CpuPaymentRequestDTO(cpuSource, developerPrefix + details.orderId(), details.description(), details.notificationAddress());
         request.setReturnAddress(details.returnAddress());
         request.setEmail(details.email());
@@ -65,7 +65,7 @@ public class CpuPaymentClient {
             String description = product.description() == null
                 ? null
                 : product.description().substring(0, Math.min(product.description().length(), 99));
-            request.getProducts().add(new CpuPaymentRequestProductDTO(cpuProductCode, 1, product.price().multiply(CENTS).intValue(), description, cpuVatClass));
+            request.getProducts().add(new CpuPaymentRequestProductDTO(product.code(), 1, product.price().multiply(CENTS).intValue(), description, cpuVatClass));
         });
         request.addHash(cpuSecretProvider);
 

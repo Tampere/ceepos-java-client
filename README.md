@@ -40,7 +40,7 @@ Jokaiseen CpuPaymentClientin ja CPU-palveluntarjoajan väliseen HTTP(s) pyyntö�
 | `CPU_SECRET`          | `top_secret`                                 | Kauppiaskohtainen salaisuus tarkistussumman laskentaan ja tarkistukseen                                        |
 | `CPU_DEVELOPERPREFIX` | (tyhjä)                                      | Tilausviitteiden etuliite, jolla erotetaan eri ympäristöjen (esim. kehittäjien) tilaus-id:t toisistaan CPU:ssa |
 
-Tuoterivien tuotekoodi ja ALV-luokka annetaan `createPayment`-kutsun parametreina (ks. alla), joten samalla clientillä voi lähettää maksupyyntöjä eri tuotekoodeilla ja ALV-luokilla.
+Tuoterivin tuotekoodi annetaan osana `CpuPaymentProductLine`-tietuetta ja ALV-luokka `createPayment`-kutsun parametrina (ks. alla), joten samalla clientillä voi lähettää maksupyyntöjä eri tuotekoodeilla ja ALV-luokilla.
 
 ## Käyttöesimerkki
 
@@ -57,9 +57,9 @@ CpuPaymentOrderDetails details = new CpuPaymentOrderDetails(
     user.getLastname(),
     returnAddress,
     notificationAddress,
-    List.of(new CpuPaymentProductLine(product.getPrice(), product.getDescription())));
+    List.of(new CpuPaymentProductLine(cpuProductCode, product.getPrice(), product.getDescription())));
 
-Optional<CpuPaymentClient.PaymentResult> result = client.createPayment(details, cpuProductCode, cpuVatClass);
+Optional<CpuPaymentClient.PaymentResult> result = client.createPayment(details, cpuVatClass);
 result.ifPresent(r -> {
     // Myös CPU:n maksupyyntöön antamassa vastauksessa on oma tiivisteensä,
     // joka kannattaa tarkistaa ennen käyttäjän ohjaamista maksuosoitteeseen.
@@ -118,7 +118,7 @@ Lisää seuraava riippuvuus (dependency) `server/pom.xml`-tiedoston `<dependenci
 <dependency>
   <groupId>fi.tampere</groupId>
   <artifactId>cpupayment-client</artifactId>
-  <version>0.1</version>
+  <version>0.3</version>
 </dependency>
 ```
 
@@ -131,4 +131,4 @@ cd server
 mvn clean install
 ```
 
-Mavenin pitäisi nyt ladata riippuvuus `fi.tampere:cpupayment-client:0.1` osoitteesta `https://maven.pkg.github.com/Tampere/cpupayment-client`.
+Mavenin pitäisi nyt ladata riippuvuus `fi.tampere:cpupayment-client:0.3` osoitteesta `https://maven.pkg.github.com/Tampere/cpupayment-client`.

@@ -5,7 +5,7 @@
 
     <groupId>fi.tampere</groupId>
     <artifactId>cpupayment-client</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <name>CPU Payment Client</name>
